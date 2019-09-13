@@ -1,0 +1,4 @@
+{:paths ["src"]
+ :deps {org.clojure/clojure {:mvn/version "1.10.1"}
+        commons-codec/commons-codec {:mvn/version "1.12"}}
+ }
