@@ -76,7 +76,7 @@
   (->> lines
        (map #(Hex/decodeHex %))
        (map #(crack-1xor %))
-       (mapcat #(max-key :prob %))
+       (concat)
        (apply max-key :prob)
        :text))
 ;; => "Now that the party is jumping\n"
