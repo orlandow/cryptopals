@@ -1,5 +1,7 @@
 (ns utils
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str])
+  (:import javax.crypto.Cipher
+           javax.crypto.spec.SecretKeySpec))
 
 (defn english-prob [txt]
   (let [common "etaoin shrdlu"
@@ -20,3 +22,19 @@
 (defn rand-bytes [n]
   (byte-array
    (repeatedly n #(rand-int 128))))
+
+(defn ecb-cipher [key encrypt?]
+  (let [bs (if (instance? String key)
+             (.getBytes key)
+             (byte-array key))
+        mode (if encrypt? Cipher/ENCRYPT_MODE Cipher/DECRYPT_MODE)]
+    (doto (Cipher/getInstance "AES/ECB/PKCS5Padding")
+      (.init mode (SecretKeySpec. bs "AES")))))
+
+(defn ecb-encrypt [key bs]
+  (let [cipher (ecb-cipher key true)]
+    (.doFinal cipher bs)))
+
+(defn ecb-decrypt [key bs]
+  (let [cipher (ecb-cipher key false)]
+    (.doFinal cipher bs)))
